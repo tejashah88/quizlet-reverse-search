@@ -1,0 +1,32 @@
+{
+  "name": "Quizlet Reverse Search",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "description": "Reverse search through 100's of millions of flashcards to find the word matching the desired definition.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "background": {
+    "scripts": ["src/background.js"],
+    "persistent": false
+  },
+  "permissions": [
+    "tabs",
+    "contextMenus",
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "js/jquery-3.3.1.slim.min.js",
+        "js/fuse-3.3.0.min.js",
+        "src/inject.js"
+      ]
+    }
+  ]
+}
