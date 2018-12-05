@@ -1,6 +1,6 @@
 {
   "name": "Quizlet Reverse Search",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "manifest_version": 2,
   "description": "Reverse search through 100's of millions of flashcards to find the word matching the desired definition.",
   "icons": {
@@ -23,7 +23,6 @@
         "<all_urls>"
       ],
       "js": [
-        "js/jquery-3.3.1.slim.min.js",
         "js/fuse-3.3.0.min.js",
         "src/inject.js"
       ]
