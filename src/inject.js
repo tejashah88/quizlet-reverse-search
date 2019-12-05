@@ -20,6 +20,26 @@ var MIN_SCIENTIFIC_ANSWERS = 5;
 var MAX_SCIENTIFIC_ANSWERS = 15;
 var MAX_COMMON_ANSWERS = 60;
 
+//Fetch From the Background
+function fetchResource(input, init) {
+  return new Promise((resolve, reject) => {
+    chrome.runtime.sendMessage({input, init}, messageResponse => {
+      const [response, error] = messageResponse;
+      if (response === null) {
+        reject(error);
+      } else {
+        // Use undefined on a 204 - No Content
+        const body = response.body ? new Blob([response.body]) : undefined;
+        resolve(new Response(body, {
+          status: response.status,
+          statusText: response.statusText,
+        }));
+      }
+    });
+  });
+}
+
+
 
 function getCleanBool(raw) {
   var cleaned = raw.toLowerCase();
@@ -207,11 +227,11 @@ var debugOutput = stuff => { console.log(stuff); return stuff; };
 var debugJsonOutput = stuff => { console.log(JSON.stringify(stuff, null, 2)); return stuff; };
 
 function searchDefinitions(query, callback) {
-  fetch(searchStrictUrl(query))
+  fetchResource(searchStrictUrl(query))
     // get google search page data
     .then(res => res.ok ? res.text().then(getSearchLinks) : verifySelfToGoogle(res))
     // get quizlet link for each google result and fetch it
-    .then(searchLinks => searchLinks.map(link => fetch(link)))
+    .then(searchLinks => searchLinks.map(link => fetchResource(link)))
     .then(promises => Promise.all(promises))
     // filter the ones that return a non-200 response (mainly to filter unauthorized access problems)
     .then(resArr => resArr.filter(res => res.ok))
