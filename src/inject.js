@@ -227,8 +227,6 @@ var debugOutput = stuff => { console.log(stuff); return stuff; };
 var debugJsonOutput = stuff => { console.log(JSON.stringify(stuff, null, 2)); return stuff; };
 
 function searchDefinitions(query, callback) {
-  console.log('This function is being called');
-//fetch(searchStrictUrl(query))
   fetchResource(searchStrictUrl(query))
     // get google search page data
     .then(res => res.ok ? res.text().then(getSearchLinks) : verifySelfToGoogle(res))
@@ -255,7 +253,6 @@ function searchDefinitions(query, callback) {
     // return the first answer back to the background page
     .then(finalAnswer => callback({ success: finalAnswer }))
     .catch(err => {
-      console.log('There is an error');
       if (err.message === VERIFY_ERROR_MSG)
         callback({ verifyRequired: true });
       else
